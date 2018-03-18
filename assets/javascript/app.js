@@ -34,17 +34,46 @@ $(document).ready(function() {
     $('#score').text(`Score: ${score} out of ${questionsArray.length}`);
   }
 
+  let timeLeft = 15;
+  let timer;
+
+  $('#timer').text(timeLeft);
+
   function displayQuestion() {
+    function startTimer() {
+      timer = setInterval(function() {
+        $('#timer').text(timeLeft);
+        if (timeLeft === 0) {
+          setTimeout(function() {
+            $('#status').empty();
+            timeLeft = 15; // test line
+            $('#timer').text(timeLeft); // test line
+            displayQuestion();
+          }, 4000);
+          clearInterval(timer);
+          $('#status').text(`Sorry you're out of time! ${questions[qIndex].funFact}`);
+          qIndex++;
+        } else {
+          timeLeft--;
+        }
+      }, 1000);
+    }
+
     if (qIndex <= (questionsArray.length - 1)) {
+      updateScore();
       $('#score').text(`Score: ${score} out of ${questionsArray.length}`);
       $('#question').text(questionsArray[qIndex]);
       $('#option1').text(questions[qIndex].options[0]);
       $('#option2').text(questions[qIndex].options[1]);
       $('#option3').text(questions[qIndex].options[2]);
-      updateScore();
+      clearInterval(timer);
+      startTimer();
     } else {
       $('#question').text('Game Over!');
-      $('#option-list').css('visibility', 'hidden');
+      $('#option1').empty();
+      $('#option2').empty();
+      $('#option3').empty();
+      $('#timer').empty();
       if (score >= 3) {
         $('#score').text(`Great job! Your final score is ${score} out of ${questionsArray.length}`);
       } else {
@@ -53,66 +82,33 @@ $(document).ready(function() {
     }
   }
 
-  displayQuestion();
-
   $('.option').on('click', function() {
     if (qIndex === questionsArray.length) {
       return;
     }
 
     const optionSelected = $(this).index();
-    // console.log(optionSelected);
     if (optionSelected === questions[qIndex].correctAnswer) {
-      console.log('Yay!');
+      setTimeout(function() {
+        $('#status').empty();
+        timeLeft = 15; // test line
+        $('#timer').text(timeLeft); // test line
+        displayQuestion();
+      }, 4000);
+      clearInterval(timer);
       $('#status').text(`Correct! ${questions[qIndex].funFact}`);
       qIndex++;
       score++;
-      displayQuestion();
     } else if (optionSelected !== questions[qIndex].correctAnswer) {
-      console.log('Nope!');
+      setTimeout(function() {
+        $('#status').empty();
+        displayQuestion();
+      }, 4000);
+      clearInterval(timer);
       $('#status').text(`Sorry! ${questions[qIndex].funFact}`);
       qIndex++;
-      displayQuestion();
     }
   });
+
+  displayQuestion();
 });
-
-// let timer;
-// let timeLeft = 10;
-
-// function startTimer() {
-//   setTimeout(function() {
-//     displayQuestion();
-//     timer = setInterval(function() {
-//       $('#timer').text(`Time remaining ${timeLeft}`);
-//       if (timeLeft === 0) {
-//         $('#status').text(`Sorry, you're out of time! ${questions[qIndex].funFact}`);
-//         clearInterval(timer);
-//         qIndex++;
-//         displayQuestion();
-//       } else if (timeLeft > 0) {
-//         $('.option').on('click', function() {
-//           const optionSelected = $(this).index();
-//           // console.log(optionSelected);
-//           if (optionSelected === questions[qIndex].correctAnswer && timeLeft > 0) {
-//             console.log('Yay!');
-//             $('#status').text(`Correct! ${questions[qIndex].funFact}`);
-//             qIndex++;
-//             score++;
-//             displayQuestion();
-//           } else if (optionSelected !== questions[qIndex].correctAnswer) {
-//             console.log('Nope!');
-//             $('#status').text(`Sorry! ${questions[qIndex].funFact}`);
-//             qIndex++;
-//             displayQuestion();
-//           }
-//         });
-//         timeLeft--;
-//       }
-//     }, 1000);
-//   }, 5000);
-
-// startTimer();
-// $('#start-game').on('click', function() {
-//   $('.hide-me').css("visibility", "hidden");
-// })
