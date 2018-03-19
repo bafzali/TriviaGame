@@ -1,0 +1,38 @@
+body {
+  color: #333333;
+  margin: 0;
+  background-color: lightblue;
+}
+
+h1 {
+  font-family: 'Sigmar One', cursive;
+  padding: 20px 0;
+}
+
+h2,
+h3 {
+  font-family: 'Paytone One', sans-serif;
+  /* font-family: 'Patrick Hand', cursive; */
+  padding-bottom: 10px;
+}
+
+p,
+button {
+  font-family: 'Patrick Hand', cursive;
+  font-size: 1.5em;
+}
+
+button {
+  margin-bottom: 10px;
+}
+
+.game-status {
+  font-weight: bold;
+  color: darkred;
+}
+
+/* .hide-me {
+  visibility: hidden;
+} */
+
+/* font-family: 'Righteous', cursive; */
