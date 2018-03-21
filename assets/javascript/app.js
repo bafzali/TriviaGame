@@ -65,7 +65,7 @@ $(document).ready(function() {
     }
 
     // Define what happens when the player clicks on their answer
-    $('.option').on('click', function() {
+    $('.option').unbind().on('click', function() {
       const optionSelected = $(this).index();
       if (optionSelected === questions[qIndex].correctAnswer) {
         setTimeout(function() {
